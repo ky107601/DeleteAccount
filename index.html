@@ -85,7 +85,7 @@
                 email: email,
                 password: password,
             };
-            const responseLogin = await fetch(`${ApiAddress}/auth/login`, {
+            const responseLogin = await fetch(`http://43.201.38.37:8080/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
