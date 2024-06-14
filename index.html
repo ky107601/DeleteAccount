@@ -82,7 +82,8 @@
             event.preventDefault();
             const formData = new FormData(this);
             try {
-                const response = await fetch(`${serverURL}`, {
+                const response = await fetch(`http://43.201.38.37:8080/user/delete
+`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
