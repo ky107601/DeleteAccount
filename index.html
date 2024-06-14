@@ -82,7 +82,7 @@
             event.preventDefault();
             const formData = new FormData(this);
             try {
-                const response = await fetch('/delete-account', {
+                const response = await fetch(`${serverURL}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
