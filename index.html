@@ -92,28 +92,37 @@
                 },
                 body: JSON.stringify(responseData),
             });
-            console.log("response", responseLogin);
-
-            try {
-                const response = await fetch(`http://43.201.38.37:8080/user/delete
+            if (response.status === 200) {
+                const { refreshToken, accessToken, name } = await response.json();
+                const token = refreshToken;
+                //회원탈퇴
+                try {
+                    const response = await fetch(`http://43.201.38.37:8080/user/delete
 `, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData))
-                });
-                if (response.ok) {
-                    const result = await response.json();
-                    alert(result.message);
-                    window.location.href = '/deleted.html'; // 회원 탈퇴 성공 후 이동할 페이지
-                } else {
-                    const error = await response.json();
-                    document.getElementById('message').textContent = error.message;
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(Object.fromEntries(formData))
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(result.message);
+                        window.location.href = '/deleted.html'; // 회원 탈퇴 성공 후 이동할 페이지
+                    } else {
+                        const error = await response.json();
+                        document.getElementById('message').textContent = error.message;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
                 }
-            } catch (error) {
-                console.error('Error:', error);
+
+            } else {
+                Alert.alert('알림', '아이디 혹은 비밀번호가 일치하지 않습니다.');
             }
+
+
         });
     </script>
 </body>
