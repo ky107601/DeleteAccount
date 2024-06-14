@@ -93,12 +93,16 @@
 
             try {
                 // Attempt to login first
-                const loginResponse = await fetch('https://43.201.38.37:8080/auth/login', {
+                const loginResponse = await fetch('http://43.201.38.37:8080/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(loginData)
+                    body: JSON.stringify(loginData),
+                    agent: new https.Agent({
+                        // 지원하는 SSL/TLS 버전 지정 (예: TLSv1.2)
+                        minVersion: 'TLSv1.2'
+                    })
                 });
 
                 if (!loginResponse.ok) {
@@ -106,7 +110,7 @@
                 }
 
                 // Extract tokens from login response
-                const { refreshToken } = await loginResponse.json();
+                const { refreshToken, accessToken } = await loginResponse.json();
 
                 // Prepare data for delete account request
                 const deleteData = {
@@ -121,10 +125,14 @@
                 };
 
                 // Attempt to delete account
-                const deleteResponse = await fetch('https://43.201.38.37:8080/user/delete', {
+                const deleteResponse = await fetch('http://43.201.38.37:8080/user/delete', {
                     method: 'DELETE',
                     headers: deleteHeaders,
-                    body: JSON.stringify(deleteData)
+                    body: JSON.stringify(deleteData),
+                    agent: new https.Agent({
+                        // 지원하는 SSL/TLS 버전 지정 (예: TLSv1.2)
+                        minVersion: 'TLSv1.2'
+                    })
                 });
 
                 if (deleteResponse.ok) {
